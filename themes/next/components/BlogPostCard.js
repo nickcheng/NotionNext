@@ -27,7 +27,7 @@ const BlogPostCard = ({ post, showSummary }) => {
             data-aos-duration="500"
             data-aos-once="true"
             data-aos-anchor-placement="top-bottom"
-            className={`cursor-pointer text-3xl ${showPreview ? 'text-center' : ''
+            className={`cursor-pointer text-5xl font-extrabold ${showPreview ? 'text-center' : ''
               } leading-tight text-gray-700 dark:text-gray-100 hover:text-blue-500 dark:hover:text-blue-400`}>
 
             <NotionIcon icon={post.pageIcon} /> <span className='menu-link'>{post.title}</span>
