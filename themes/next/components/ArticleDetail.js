@@ -46,7 +46,7 @@ export default function ArticleDetail(props) {
                     )}
 
                     {/* title */}
-                    <div className=" text-center font-bold text-3xl text-black dark:text-white font-serif pt-6">
+                    <div className=" text-center font-extrabold text-5xl text-black dark:text-white font-serif pt-6">
                         <NotionIcon icon={post.pageIcon} />{post.title}
                     </div>
 
