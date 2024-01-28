@@ -69,6 +69,7 @@
 
 .notion {
   font-size: 18px;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--fg-color);
   caret-color: var(--fg-color);
