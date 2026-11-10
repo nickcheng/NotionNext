@@ -254,6 +254,65 @@ describe('Notion data format compatibility', () => {
     expect(pageIds).toEqual(['page_1', 'page_2'])
   })
 
+  it('preserves selected-view order regardless of query completion order', () => {
+    const selected = { blockIds: ['pinned', 'new', 'old'] }
+    const other = { blockIds: ['hidden', 'old', 'new'] }
+    for (const entries of [
+      [
+        ['view_1', selected],
+        ['view_2', other]
+      ],
+      [
+        ['view_2', other],
+        ['view_1', selected]
+      ]
+    ]) {
+      expect(
+        getAllPageIds(
+          { collection_1: Object.fromEntries(entries) },
+          'collection_1',
+          {},
+          ['view_1', 'view_2']
+        )
+      ).toEqual(['pinned', 'new', 'old'])
+    }
+  })
+
+  it('stabilizes fallback views without sorting individual view results', () => {
+    const first = { blockIds: ['pinned', 'new', 'old'] }
+    const second = { blockIds: ['old', 'extra', 'new'] }
+    for (const entries of [
+      [
+        ['view_a', first],
+        ['view_b', second]
+      ],
+      [
+        ['view_b', second],
+        ['view_a', first]
+      ]
+    ]) {
+      expect(
+        getAllPageIds(
+          { collection_1: Object.fromEntries(entries) },
+          'collection_1',
+          {},
+          []
+        )
+      ).toEqual(['pinned', 'new', 'old', 'extra'])
+    }
+  })
+
+  it('does not import other views when the selected query is unavailable', () => {
+    expect(
+      getAllPageIds(
+        { collection_1: { view_2: { blockIds: ['hidden'] } } },
+        'collection_1',
+        { view_1: { value: { value: { page_sort: ['pinned', 'old'] } } } },
+        ['view_1', 'view_2']
+      )
+    ).toEqual(['pinned', 'old'])
+  })
+
   it('filters embedded collection query results by selected view filters', () => {
     const blockMap = {
       block: {
